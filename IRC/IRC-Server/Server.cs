@@ -1,19 +1,16 @@
 ﻿using System;
 using System.Runtime.Remoting;
 using System.Runtime.Remoting.Channels;
-using System.IO;
-using System.Collections.Generic;
-using System.Linq;
-using System.Net;
-using System.Net.Sockets;
-using System.Text;
-using System.Threading.Tasks;
 using System.Runtime.Serialization.Formatters;
 using System.Collections;
+using System.Runtime.Remoting.Channels.Tcp;
+using System.Diagnostics;
+using IRC;
 
-namespace IRC
+namespace IRC_Server
+
 {
-    class Server
+    class Server // : IServer
     {
         public int port { get; set; }
         
@@ -22,6 +19,10 @@ namespace IRC
             this.port = port;
             SetupConfig();
         }
+
+       /* public Server()
+        {
+        } */
 
         public void SetupConfig()
         {
@@ -34,6 +35,7 @@ namespace IRC
             // Create the server channel.
             TcpChannel serverChannel = new TcpChannel(props, null, provider);
 
+            
             // Register the server channel.
             ChannelServices.RegisterChannel(serverChannel, false);
 
@@ -42,10 +44,14 @@ namespace IRC
                 serverChannel.ChannelName);
 
             RemotingConfiguration.RegisterWellKnownServiceType(
-                       typeof(RemoteObject), "RemoteObject.rem",
+                     typeof(RemoteObject), "RemoteObject.rem",
                        WellKnownObjectMode.Singleton);
         }
 
+    /*    public override string logIn()
+        {
+            return "loggedIN";
+        }*/
     }
 
 

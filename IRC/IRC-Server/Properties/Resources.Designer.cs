@@ -8,7 +8,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace IRC_Server.Properties
+namespace IRC.Properties
 {
 
 

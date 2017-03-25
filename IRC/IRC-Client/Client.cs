@@ -1,18 +1,18 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
+﻿using IRC;
+using System;
 using System.Runtime.Remoting;
 using System.Runtime.Remoting.Channels;
 using System.Runtime.Remoting.Channels.Tcp;
-using System.Text;
-using System.Threading.Tasks;
 
-namespace IRC
+namespace IRC_Client
 {
     class Client
     {
-        public Client()
+        int svPort;
+
+        public Client(int port)
         {
+            svPort = port;
             setupConfig();
         }
 
@@ -26,14 +26,14 @@ namespace IRC
 
             // Register as client for remote object.
             WellKnownClientTypeEntry remoteType = new WellKnownClientTypeEntry(
-                typeof(RemoteObject), "tcp://localhost:9090/RemoteObject.rem");
+                typeof(RemoteObject), "tcp://localhost:"+svPort+ "/RemoteObject.rem");
             RemotingConfiguration.RegisterWellKnownClientType(remoteType);
 
             // Create a message sink.
             string objectUri;
             System.Runtime.Remoting.Messaging.IMessageSink messageSink =
                 clientChannel.CreateMessageSink(
-                    "tcp://localhost:9090/RemoteObject.rem", null,
+                    "tcp://localhost:"+svPort+ "/RemoteObject.rem", null,
                     out objectUri);
             Console.WriteLine("The URI of the message sink is {0}.",
                 objectUri);
@@ -42,6 +42,9 @@ namespace IRC
                 Console.WriteLine("The type of the message sink is {0}.",
                     messageSink.GetType().ToString());
             }
+
+
+            //==================================================
 
             // Create an instance of the remote object.
             RemoteObject service = new RemoteObject();
