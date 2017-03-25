@@ -26,14 +26,14 @@ namespace IRC_Client
 
             // Register as client for remote object.
             WellKnownClientTypeEntry remoteType = new WellKnownClientTypeEntry(
-                typeof(RemoteObject), "tcp://localhost:"+svPort+ "/RemoteObject.rem");
-            RemotingConfiguration.RegisterWellKnownClientType(remoteType);
+                typeof(IServer), "tcp://localhost:" + svPort + "/Server.rem");
+            RemotingConfiguration.RegisterWellKnownClientType(remoteType);  
 
             // Create a message sink.
             string objectUri;
             System.Runtime.Remoting.Messaging.IMessageSink messageSink =
                 clientChannel.CreateMessageSink(
-                    "tcp://localhost:"+svPort+ "/RemoteObject.rem", null,
+                    "tcp://localhost:"+ svPort + "/Server.rem", null,
                     out objectUri);
             Console.WriteLine("The URI of the message sink is {0}.",
                 objectUri);
@@ -41,18 +41,19 @@ namespace IRC_Client
             {
                 Console.WriteLine("The type of the message sink is {0}.",
                     messageSink.GetType().ToString());
-            }
+            } 
 
 
             //==================================================
 
             // Create an instance of the remote object.
-            RemoteObject service = new RemoteObject();
+            IServer service = (IServer)Activator.GetObject(typeof(IServer),
+                "tcp://localhost:" + svPort + "/Server.rem");
 
             // Invoke a method on the remote object.
             Console.WriteLine("The client is invoking the remote object.");
-            Console.WriteLine("The remote object has been called {0} times.",
-                service.GetCount());
+            Console.WriteLine("The remote object has been called {0} times." +
+                service.logIn());
         }
 
     }

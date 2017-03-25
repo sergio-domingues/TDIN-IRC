@@ -4,13 +4,11 @@ using System.Runtime.Remoting.Channels;
 using System.Runtime.Serialization.Formatters;
 using System.Collections;
 using System.Runtime.Remoting.Channels.Tcp;
-using System.Diagnostics;
-using IRC;
 
 namespace IRC_Server
 
 {
-    class Server // : IServer
+    class Server : IRC.IServer 
     {
         public int port { get; set; }
         
@@ -20,9 +18,9 @@ namespace IRC_Server
             SetupConfig();
         }
 
-       /* public Server()
+        public Server()
         {
-        } */
+        } 
 
         public void SetupConfig()
         {
@@ -44,14 +42,40 @@ namespace IRC_Server
                 serverChannel.ChannelName);
 
             RemotingConfiguration.RegisterWellKnownServiceType(
-                     typeof(RemoteObject), "RemoteObject.rem",
+                     new Server().GetType(), "Server.rem",
                        WellKnownObjectMode.Singleton);
+
+            // Parse the channel's URI.
+            string[] urls = serverChannel.GetUrlsForUri("Server.rem");
+            if (urls.Length > 0)
+            {
+                string objectUrl = urls[0];
+                string objectUri;
+                string channelUri = serverChannel.Parse(objectUrl, out objectUri);
+                Console.WriteLine("The object URL is {0}.", objectUrl);
+                Console.WriteLine("The object URI is {0}.", objectUri);
+                Console.WriteLine("The channel URI is {0}.", channelUri);
+            }
+
         }
 
-    /*    public override string logIn()
+
+
+        //se houveer problemas de comunicaçao adicionar container
+        //implementar como singleton
+        private int callCount = 0;
+
+        public int GetCount()
         {
-            return "loggedIN";
-        }*/
+            Console.WriteLine("Users logged:" + callCount);
+            callCount++;
+            return (callCount);
+        }
+
+        public override string logIn()
+        {
+            return "logged in";
+        }
     }
 
 
