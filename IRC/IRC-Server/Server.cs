@@ -70,9 +70,19 @@ namespace IRC_Server
             return (callCount);
         }
 
-        public override string logIn()
+        public override string logIn(string nickname, string password)
         {
-            return "logged in";
+            return "<Server - LOG IN> Username: " + nickname + " password: " + password;
+        }
+
+        public override string signUp(string username, string nickname, string password)
+        {
+            return "<Server - SIGN UP> Username: " + nickname + " password: " + password + " realname:" + username;
+        }
+
+        public override string logOut()
+        {
+            throw new NotImplementedException();
         }
     }
 

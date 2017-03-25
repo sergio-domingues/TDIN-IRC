@@ -6,14 +6,15 @@ using System.Runtime.Remoting.Channels.Tcp;
 
 namespace IRC_Client
 {
-    class Client
+    public class Client
     {
         int svPort;
+        IServer svProxy;
 
         public Client(int port)
         {
             svPort = port;
-            setupConfig();
+            setupConfig();            
         }
 
         public void setupConfig()
@@ -42,18 +43,24 @@ namespace IRC_Client
                 Console.WriteLine("The type of the message sink is {0}.",
                     messageSink.GetType().ToString());
             } 
-
-
+            
             //==================================================
 
             // Create an instance of the remote object.
-            IServer service = (IServer)Activator.GetObject(typeof(IServer),
+            svProxy = (IServer)Activator.GetObject(typeof(IServer),
                 "tcp://localhost:" + svPort + "/Server");
+        }
 
-            // Invoke a method on the remote object.
-            Console.WriteLine("The client is invoking the remote object.");
-            Console.WriteLine("Log in result: " +
-                service.logIn());
+        public void logIn(string nickname, string password)
+        {  // Invoke a method on the remote object.
+            Console.WriteLine("<LOG IN> The client is invoking the remote object.");
+            Console.WriteLine("Log in result: " +  svProxy.logIn(nickname, password));
+        }
+
+        public void signUp(string username, string nickname, string password)
+        {  // Invoke a method on the remote object.
+            Console.WriteLine("<CLI - SIGN UP> The client is invoking the remote object.");
+            Console.WriteLine("CLI - SIGN UP result: " + svProxy.signUp(username, nickname, password));
         }
 
     }
