@@ -42,11 +42,11 @@ namespace IRC_Server
                 serverChannel.ChannelName);
 
             RemotingConfiguration.RegisterWellKnownServiceType(
-                     new Server().GetType(), "Server.rem",
+                     new Server().GetType(), "Server",
                        WellKnownObjectMode.Singleton);
 
             // Parse the channel's URI.
-            string[] urls = serverChannel.GetUrlsForUri("Server.rem");
+            string[] urls = serverChannel.GetUrlsForUri("Server");
             if (urls.Length > 0)
             {
                 string objectUrl = urls[0];
@@ -58,9 +58,7 @@ namespace IRC_Server
             }
 
         }
-
-
-
+        
         //se houveer problemas de comunicaçao adicionar container
         //implementar como singleton
         private int callCount = 0;
