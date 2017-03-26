@@ -6,11 +6,13 @@ namespace IRC
 {
     public abstract class IServer : MarshalByRefObject
     {
-        public abstract List<string> logIn(string nickname, string password);
+
+        public event AlterDelegate alterEvent;
+        public abstract ArrayList logIn(string nickname, string password);
 
         public abstract string signUp(string username, string nickname, string password);
 
-        public abstract string logOut();
+        public abstract void logOut(User us);
 
     }
 }

@@ -5,6 +5,8 @@ using System.Runtime.Serialization.Formatters;
 using System.Collections;
 using System.Runtime.Remoting.Channels.Tcp;
 using System.Collections.Generic;
+using IRC;
+using System.Threading;
 
 namespace IRC_Server
 
@@ -13,9 +15,11 @@ namespace IRC_Server
     {
         public int port { get; set; }
 
-        public Hashtable table = new Hashtable();
         
-        public Server(int port)
+        public Hashtable table = new Hashtable();
+        public ArrayList users = new ArrayList();
+        
+       public Server(int port)
         {
             this.port = port;
             SetupConfig();
@@ -64,22 +68,6 @@ namespace IRC_Server
         
         //se houveer problemas de comunicaçao adicionar container
         //implementar como singleton
-        private int callCount = 0;
-
-        public int GetCount()
-        {
-            Console.WriteLine("Users logged:" + callCount);
-            callCount++;
-            return (callCount);
-        }
-        
-        public override List<string> logIn(string nickname, string password)
-        {
-            table.Add(nickname, password);
-            Console.WriteLine("<Server - LOG IN> Username: " + nickname + " password: " + password);
-
-            return getUserList();           
-        }
 
         private List<string> getUserList()
         {
@@ -90,16 +78,87 @@ namespace IRC_Server
             return l;
         }
 
+        public override ArrayList logIn(string nickname, string password)
+        {
+            table.Add(nickname, password);
+            Console.WriteLine("<Server - LOG IN> Username: " + nickname + " password: " + password);
+
+            AddUser(new User(Guid.NewGuid(), nickname));
+
+            return users;           
+        }       
 
         public override string signUp(string username, string nickname, string password)
         {
             return "<Server - SIGN UP> Username: " + nickname + " password: " + password + " realname:" + username;
         }
 
-        public override string logOut()
+        public override void logOut(User us)
         {
-            throw new NotImplementedException();
+            table.Remove(us.nickname);
+            DelUser(us);
         }
+
+        //===========================Remote events
+        
+        public event AlterDelegate alterEvent;
+          
+        public override object InitializeLifetimeService()
+        {
+            return null;
+        }
+               
+     
+        public void AddUser(User user)
+        {
+            users.Add(user);
+            NotifyClients(Operation.NewUser, user);
+        }
+
+       
+        public void DelUser(User user)
+        {
+            remFromUsers(user);
+            NotifyClients(Operation.DelUser, user);
+        }
+
+        public void remFromUsers(User us)
+        {
+            foreach(User user in users)
+            {
+                if (user.nickname == us.nickname)
+                {
+                    users.Remove(user);
+                    break;
+                }
+            }
+        }
+
+    
+        void NotifyClients(Operation op, User user)
+        {
+            if (alterEvent != null)
+            {
+                Delegate[] invkList = alterEvent.GetInvocationList();
+
+                foreach (AlterDelegate handler in invkList)
+                {
+                    new Thread(() => {
+                        try
+                        {
+                            handler(op, user);
+                            Console.WriteLine("Invoking event handler");
+                        }
+                        catch (Exception)
+                        {
+                            alterEvent -= handler;
+                            Console.WriteLine("Exception: Removed an event handler");
+                        }
+                    }).Start();
+                }
+            }
+        }
+
     }
 
 

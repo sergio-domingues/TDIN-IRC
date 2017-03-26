@@ -25,12 +25,12 @@ namespace IRC_Client
         //login
         private void button1_Click(object sender, EventArgs e)
         {
-            List<string> nicks;
-            nicks = cli.logIn(nicknameTextBox.Text, passwordTextBox.Text);
+            ArrayList users;
+            users = cli.logIn(nicknameTextBox.Text, passwordTextBox.Text);
 
             Visible = false;
 
-            ServerInterface serverInterface = new ServerInterface(nicks);
+            ServerInterface serverInterface = new ServerInterface(users, cli);
             serverInterface.ShowDialog();
             Visible = true;
         }

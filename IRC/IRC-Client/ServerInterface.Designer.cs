@@ -61,6 +61,7 @@ namespace IRC_Client
             this.logOutButton.TabIndex = 2;
             this.logOutButton.Text = "LogOut";
             this.logOutButton.UseVisualStyleBackColor = true;
+            this.logOutButton.Click += new System.EventHandler(this.logOutButton_Click);
             // 
             // ServerInterface
             // 
