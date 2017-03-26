@@ -76,6 +76,7 @@ namespace IRC_Client
             evRepeater.alterEvent -= new AlterDelegate(DoAlterations);
 
             cli.logOut();
+            this.users = null;
         }
 
         private void logOutButton_Click(object sender, EventArgs e)
@@ -85,6 +86,7 @@ namespace IRC_Client
 
             cli.logOut();
             this.Visible = false;
+            this.users = null;
         }
     }
 }

@@ -133,7 +133,6 @@ namespace IRC_Server
                 }
             }
         }
-
     
         void NotifyClients(Operation op, User user)
         {
