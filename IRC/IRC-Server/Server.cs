@@ -4,6 +4,7 @@ using System.Runtime.Remoting.Channels;
 using System.Runtime.Serialization.Formatters;
 using System.Collections;
 using System.Runtime.Remoting.Channels.Tcp;
+using System.Data.SQLite;
 
 namespace IRC_Server
 
@@ -11,7 +12,10 @@ namespace IRC_Server
     class Server : IRC.IServer 
     {
         public int port { get; set; }
-        
+
+        SQLiteConnection m_dbConnection = new SQLiteConnection("Data Source = ../../database.db; Version=3;");
+
+
         public Server(int port)
         {
             this.port = port;
@@ -72,12 +76,57 @@ namespace IRC_Server
 
         public override string logIn(string nickname, string password)
         {
-            return "<Server - LOG IN> Username: " + nickname + " password: " + password;
+            string sql = "select * from User where username = '" + nickname + "' and password = '" + password + "';";
+            Console.WriteLine(sql);
+            m_dbConnection.Open();
+            SQLiteCommand command = new SQLiteCommand(sql, m_dbConnection);
+            SQLiteDataReader success = command.ExecuteReader();
+            
+
+            if (success.Read())
+            {
+                m_dbConnection.Close();
+                return "<Server - LOG IN SUCCESS> Username: " + nickname + " password: " + password;
+            }
+            else {
+                m_dbConnection.Close();
+                return "<Server - LOG IN FAILURE> Username: " + nickname + " password: " + password;
+            }
+
+            
         }
 
         public override string signUp(string username, string nickname, string password)
         {
-            return "<Server - SIGN UP> Username: " + nickname + " password: " + password + " realname:" + username;
+            if (username == "" || nickname == "" || password == "") {
+                return "<Server - SIGN UP FAIL: MISSING FIELD> Username: " + nickname + " password: " + password;
+            }
+
+            string sql_check = "select * from User where username = '" + nickname + "' and password = '" + password + "';";
+
+            m_dbConnection.Open();
+            SQLiteCommand command = new SQLiteCommand(sql_check, m_dbConnection);
+            SQLiteDataReader success = command.ExecuteReader();
+
+
+            if (success.Read())
+            {
+                m_dbConnection.Close();
+                return "<Server - SIGN UP FAIL: NICK ALREADY TAKEN> Username: " + nickname + " password: " + password;
+            }
+            else
+            {
+                string sql = "insert into User(username, password, name) VALUES('" + nickname + "' , '" + password + "' , '" + username + "' );";
+                SQLiteCommand commandRegister = new SQLiteCommand(sql, m_dbConnection);
+                commandRegister.ExecuteNonQuery();
+                m_dbConnection.Close();
+                return "<Server - SIGN UP SUCCESS> Username: " + nickname + " password: " + password + " realname:" + username;
+            }
+
+            
+            
+            
+            
         }
 
         public override string logOut()
