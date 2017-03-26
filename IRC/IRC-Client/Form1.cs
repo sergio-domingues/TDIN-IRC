@@ -1,5 +1,6 @@
 ﻿using System;
-
+using System.Collections;
+using System.Collections.Generic;
 using System.Windows.Forms;
 
 namespace IRC_Client
@@ -24,13 +25,27 @@ namespace IRC_Client
         //login
         private void button1_Click(object sender, EventArgs e)
         {
-            cli.logIn(nicknameTextBox.Text, passwordTextBox.Text);
+            List<string> nicks;
+            nicks = cli.logIn(nicknameTextBox.Text, passwordTextBox.Text);
+
+            Visible = false;
+
+            ServerInterface serverInterface = new ServerInterface(nicks);
+            serverInterface.ShowDialog();
+            Visible = true;
         }
 
         //signup
         private void button2_Click(object sender, EventArgs e)
         {
-            cli.signUp(usernameTextBox.Text, nicknameTextBox.Text, passwordTextBox.Text);
+            string nick = nicknameTextBox.Text;
+
+            cli.signUp(usernameTextBox.Text, nick, passwordTextBox.Text);
+            Visible = false;
+
+            //ServerInterface serverInterface = new ServerInterface(nick);
+           // serverInterface.ShowDialog();
+           // Visible = true;
         }
 
 

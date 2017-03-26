@@ -4,6 +4,7 @@ using System.Runtime.Remoting.Channels;
 using System.Runtime.Serialization.Formatters;
 using System.Collections;
 using System.Runtime.Remoting.Channels.Tcp;
+using System.Collections.Generic;
 
 namespace IRC_Server
 
@@ -11,6 +12,8 @@ namespace IRC_Server
     class Server : IRC.IServer 
     {
         public int port { get; set; }
+
+        public Hashtable table = new Hashtable();
         
         public Server(int port)
         {
@@ -69,11 +72,24 @@ namespace IRC_Server
             callCount++;
             return (callCount);
         }
-
-        public override string logIn(string nickname, string password)
+        
+        public override List<string> logIn(string nickname, string password)
         {
-            return "<Server - LOG IN> Username: " + nickname + " password: " + password;
+            table.Add(nickname, password);
+            Console.WriteLine("<Server - LOG IN> Username: " + nickname + " password: " + password);
+
+            return getUserList();           
         }
+
+        private List<string> getUserList()
+        {
+            List<string> l = new List<string>();
+            foreach (string user in table.Keys)
+                l.Add(user);
+
+            return l;
+        }
+
 
         public override string signUp(string username, string nickname, string password)
         {

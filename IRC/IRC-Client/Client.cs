@@ -1,5 +1,7 @@
 ﻿using IRC;
 using System;
+using System.Collections;
+using System.Collections.Generic;
 using System.Runtime.Remoting;
 using System.Runtime.Remoting.Channels;
 using System.Runtime.Remoting.Channels.Tcp;
@@ -51,10 +53,17 @@ namespace IRC_Client
                 "tcp://localhost:" + svPort + "/Server");
         }
 
-        public void logIn(string nickname, string password)
+        public List<string> logIn(string nickname, string password)
         {  // Invoke a method on the remote object.
+            List<string> users;
+
             Console.WriteLine("<LOG IN> The client is invoking the remote object.");
-            Console.WriteLine("Log in result: " +  svProxy.logIn(nickname, password));
+
+            users = svProxy.logIn(nickname, password);
+
+            Console.WriteLine("Log in result: " +  users.ToString());
+
+            return users;
         }
 
         public void signUp(string username, string nickname, string password)
