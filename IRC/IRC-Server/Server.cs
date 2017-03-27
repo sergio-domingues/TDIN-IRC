@@ -165,6 +165,10 @@ namespace IRC_Server
             }
         }
 
+        public override string requestChat(User user)
+        {
+            throw new NotImplementedException();
+        }
     }
 
 

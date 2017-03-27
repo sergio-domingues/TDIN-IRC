@@ -76,20 +76,22 @@ namespace IRC_Client
 
         private void ClientWindow_FormClosed(object sender, FormClosedEventArgs e)
         {
-            cli.svProxy.alterEvent -= new AlterDelegate(evRepeater.Repeater);
-            evRepeater.alterEvent -= new AlterDelegate(DoAlterations);
-
-            cli.logOut();
-            this.users = null;
+            logOutAux();
         }
 
         private void logOutButton_Click(object sender, EventArgs e)
+        {
+            logOutAux();
+            this.Visible = false;
+        }
+
+        private void logOutAux()
         {
             cli.svProxy.alterEvent -= new AlterDelegate(evRepeater.Repeater);
             evRepeater.alterEvent -= new AlterDelegate(DoAlterations);
 
             cli.logOut();
-            this.Visible = false;
+
             this.users = null;
         }
 

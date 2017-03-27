@@ -14,7 +14,10 @@ namespace IRC
 
         public abstract void logOut(User us);
 
-       
+        /*
+         * return receiver remote object address for communication          
+         */
+        public abstract string requestChat(User user);
 
     }
 }
