@@ -22,36 +22,20 @@ namespace IRC_Client
 
         public void setupConfig()
         {
+            BinaryServerFormatterSinkProvider provider = new BinaryServerFormatterSinkProvider();
+            provider.TypeFilterLevel = System.Runtime.Serialization.Formatters.TypeFilterLevel.Full;
+            IDictionary props = new Hashtable();
+            props["port"] = 0;
+
             // Create the channel.
-            TcpChannel clientChannel = new TcpChannel();
+            TcpChannel clientChannel = new TcpChannel(props, null, provider);
 
             // Register the channel.
             ChannelServices.RegisterChannel(clientChannel, false);
 
-            // Register as client for remote object.
-            WellKnownClientTypeEntry remoteType = new WellKnownClientTypeEntry(
-                typeof(IServer), "tcp://localhost:" + svPort + "/Server");
-            RemotingConfiguration.RegisterWellKnownClientType(remoteType);
-
-            // Create a message sink.
-            string objectUri;
-            System.Runtime.Remoting.Messaging.IMessageSink messageSink =
-                clientChannel.CreateMessageSink(
-                    "tcp://localhost:" + svPort + "/Server", null,
-                    out objectUri);
-            Console.WriteLine("The URI of the message sink is {0}.",
-                objectUri);
-            if (messageSink != null)
-            {
-                Console.WriteLine("The type of the message sink is {0}.",
-                    messageSink.GetType().ToString());
-            }
-
-            //==================================================
-
             // Create an instance of the remote object.
             svProxy = (IServer)Activator.GetObject(typeof(IServer),
-                "tcp://localhost:" + svPort + "/Server");
+                "tcp://localhost:" + svPort + "/Server");         
         }
 
 

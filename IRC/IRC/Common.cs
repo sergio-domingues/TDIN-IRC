@@ -49,25 +49,10 @@ namespace IRC
     {
         event AlterDelegate alterEvent;
 
-        ArrayList GetList();
-        int GetNewType();
-        void AddItem(Item item);
-        void ChangeComment(int type, string comment);
+        ArrayList GetList();       
+        void AddUser(User user);
+        void DelUser(User user);
     }
 
-    public class AlterEventRepeater : MarshalByRefObject
-    {
-        public event AlterDelegate alterEvent;
-
-        public override object InitializeLifetimeService()
-        {
-            return null;
-        }
-
-        public void Repeater(Operation op, User user)
-        {
-            if (alterEvent != null)
-                alterEvent(op, user);
-        }
-    }
+   
 }

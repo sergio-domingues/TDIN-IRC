@@ -101,8 +101,15 @@ namespace IRC_Server
 
         //===========================Remote events
         
-        public event AlterDelegate alterEvent;
-          
+        public override event AlterDelegate alterEvent;
+
+        public ArrayList GetList()
+        {
+            Console.WriteLine("GetList() called.");
+            return users;
+        }
+
+
         public override object InitializeLifetimeService()
         {
             return null;
@@ -136,7 +143,9 @@ namespace IRC_Server
     
         void NotifyClients(Operation op, User user)
         {
-            if (alterEvent != null)
+            alterEvent?.Invoke(op, user);
+
+            /*if (alterEvent != null)
             {
                 Delegate[] invkList = alterEvent.GetInvocationList();
 
@@ -155,7 +164,7 @@ namespace IRC_Server
                         }
                     }).Start();
                 }
-            }
+            }*/
         }
 
     }

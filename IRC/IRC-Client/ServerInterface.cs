@@ -11,7 +11,7 @@ namespace IRC_Client
         ArrayList users;
         Client cli;
 
-        AlterEventRepeater evRepeater;        
+        IServer.AlterEventRepeater evRepeater;        
 
         delegate ListViewItem LVAddDelegate(ListViewItem lvItem);
         delegate void LVDelDelegate(User user);
@@ -24,7 +24,7 @@ namespace IRC_Client
             
             InitializeComponent();
 
-            evRepeater = new AlterEventRepeater();
+            evRepeater = new IServer.AlterEventRepeater();
             evRepeater.alterEvent += new AlterDelegate(DoAlterations);
             this.cli.svProxy.alterEvent += new AlterDelegate(evRepeater.Repeater);
         }
