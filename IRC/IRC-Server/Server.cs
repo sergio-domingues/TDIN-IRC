@@ -14,9 +14,7 @@ namespace IRC_Server
     class Server : IServer 
     {
         public int port { get; set; }
-
-        
-        public Hashtable table = new Hashtable();
+      
         public ArrayList users = new ArrayList();
         
        public Server(int port)
@@ -40,7 +38,6 @@ namespace IRC_Server
             // Create the server channel.
             TcpChannel serverChannel = new TcpChannel(props, null, provider);
 
-            
             // Register the server channel.
             ChannelServices.RegisterChannel(serverChannel, false);
 
@@ -69,52 +66,58 @@ namespace IRC_Server
         //se houveer problemas de comunicaçao adicionar container
         //implementar como singleton
 
-        private List<string> getUserList()
+        public override ArrayList getUsersList()
         {
-            List<string> l = new List<string>();
-            foreach (string user in table.Keys)
-                l.Add(user);
-
-            return l;
+            return users;
         }
 
-        public override ArrayList logIn(string nickname, string password)
+        //TODO integration with db
+        public override bool logIn(string nickname, string password, string address, int port)
+        {            
+            Console.WriteLine("<Server - LOG IN> Username: " + nickname + " addr: " + address + " port: " + port);
+
+            //todo userexists -> DB
+            if (userLoggedIn(nickname) /*&& !userExists(nickname)*/)
+                return false;
+
+            User newUser = new User(nickname, address, port);          
+            AddUser(newUser);
+
+            return true;           
+        }
+       
+        public override bool signUp(string username, string nickname, string password)
         {
-            table.Add(nickname, password);
-            Console.WriteLine("<Server - LOG IN> Username: " + nickname + " password: " + password);
+            //TODO checkar se já existe um utilizador com o nickname de input
+            //CHAMADA à base de dados
 
-            AddUser(new User(Guid.NewGuid(), nickname));
-
-            return users;           
-        }       
-
-        public override string signUp(string username, string nickname, string password)
-        {
-            return "<Server - SIGN UP> Username: " + nickname + " password: " + password + " realname:" + username;
+            return true;
         }
 
         public override void logOut(User us)
         {
-            table.Remove(us.nickname);
+            Console.WriteLine("<SERVER LOGOUT> " + us.nickname);
             DelUser(us);
         }
 
-        //===========================Remote events
-        
-        public override event AlterDelegate alterEvent;
-
-        public ArrayList GetList()
+        private bool userLoggedIn(string nickname)
         {
-            Console.WriteLine("GetList() called.");
-            return users;
+            foreach (User us in users)
+            {
+                if (us.nickname == nickname)
+                    return true;
+            }
+            return false;
         }
+        //===========================Remote events
 
+        public override event AlterDelegate alterEvent;
+     
         public override object InitializeLifetimeService()
         {
             return null;
         }
-               
-     
+                    
         public void AddUser(User user)
         {
             users.Add(user);
@@ -165,10 +168,7 @@ namespace IRC_Server
             }
         }
 
-        public override string requestChat(User user)
-        {
-            throw new NotImplementedException();
-        }
+       
     }
 
 

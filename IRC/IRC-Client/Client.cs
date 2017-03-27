@@ -13,6 +13,8 @@ namespace IRC_Client
         int svPort;
         public IServer svProxy;
         public User myUser;
+        public ArrayList usersList;
+
 
         public Client(int port)
         {
@@ -38,17 +40,24 @@ namespace IRC_Client
                 "tcp://localhost:" + svPort + "/Server");         
         }
 
-
-
-        public ArrayList logIn(string nickname, string password)
-        {  // Invoke a method on the remote object.
-            ArrayList users;
-
+        public bool logIn(string nickname, string password)
+        {            
             Console.WriteLine("<LOG IN> The client is invoking the remote object.");
 
-            users = svProxy.logIn(nickname, password);
-           
-            foreach (User us in users)
+            //TODO access to this client peercomunication service address / port
+            string address = "TODO:HARDCODED";
+            int port = -1;
+            bool loggedIn;
+
+            loggedIn = svProxy.logIn(nickname, password, address, port);
+
+            //TODO - HANDLE FORM ON LOGGIN ERROR
+            if (!loggedIn)
+                return false;
+
+            usersList = svProxy.getUsersList();
+
+            foreach (User us in usersList)
             {
                 if (us.nickname.Equals(nickname))
                 {
@@ -57,8 +66,18 @@ namespace IRC_Client
                 }
             }
 
-            Console.WriteLine("Log in result: " + users.ToString());
-            return users;
+            //Console.WriteLine("Log in result: " + users.ToString());
+            return true;
+        }
+
+        internal void removeUserFromList(User us)
+        {
+            usersList.Remove(us);
+        }
+
+        internal void addUserToList(User us)
+        {
+            usersList.Add(us);
         }
 
         public void signUp(string username, string nickname, string password)
@@ -66,11 +85,11 @@ namespace IRC_Client
             Console.WriteLine("<CLI - SIGN UP> The client is invoking the remote object.");
             Console.WriteLine("CLI - SIGN UP result: " + svProxy.signUp(username, nickname, password));
         }
-
-
+        
         public void logOut()
         {
             svProxy.logOut(myUser);
+            usersList = null;
         }
 
     }

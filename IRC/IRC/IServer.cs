@@ -8,16 +8,13 @@ namespace IRC
     {
 
         public abstract event AlterDelegate alterEvent;
-        public abstract ArrayList logIn(string nickname, string password);
+        public abstract bool logIn(string nickname, string password, string address, int port);
 
-        public abstract string signUp(string username, string nickname, string password);
+        public abstract bool signUp(string username, string nickname, string password);
 
-        public abstract void logOut(User us);
+        public abstract void logOut(User user);
 
-        /*
-         * return receiver remote object address for communication          
-         */
-        public abstract string requestChat(User user);
+        public abstract ArrayList getUsersList();     
 
     }
 }

@@ -25,18 +25,24 @@ namespace IRC_Client
         //login
         private void button1_Click(object sender, EventArgs e)
         {
-            ArrayList users;
-            users = cli.logIn(nicknameTextBox.Text, passwordTextBox.Text);
+            bool loggedIn = cli.logIn(nicknameTextBox.Text, passwordTextBox.Text);
 
-            Visible = false;
-
-            ServerInterface serverInterface = new ServerInterface(users, cli);
-            serverInterface.ShowDialog();
-            Visible = true;
+            if (loggedIn)
+            {
+                Visible = false;
+                ServerInterface serverInterface = new ServerInterface(cli);
+                serverInterface.ShowDialog();
+                Visible = true;
+            } 
+            /* else {  //todo show label "log in error"
+             *  
+             * 
+             * }   
+             * */              
         }
 
-        //signup
-        private void button2_Click(object sender, EventArgs e)
+        //signup 
+        private void button2_Click(object sender, EventArgs e)  //todo mudar de acordo com o metodo de signup do cliente
         {
             string nick = nicknameTextBox.Text;
 

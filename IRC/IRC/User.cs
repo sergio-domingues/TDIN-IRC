@@ -9,20 +9,17 @@ namespace IRC
     [Serializable]
     public class User
     {
-        public Guid guid { get; set; }
         public string nickname { get; set; }
+        public string address { get; set; }
+        public int port { get; set; }
 
-        public User(Guid guid, string nick)
+        public User(string nick, string address, int port)
         {
-            this.guid = guid;
             nickname = nick;
+            this.address = address;
+            this.port = port;
         }
-
-        public User(string nick)
-        {
-            this.guid = Guid.NewGuid();
-            nickname = nick;
-        }
+    
     }
 
 

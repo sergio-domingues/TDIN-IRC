@@ -7,8 +7,7 @@ using System.Windows.Forms;
 namespace IRC_Client
 {
     public partial class ServerInterface : Form
-    {
-        ArrayList users;
+    {       
         Client cli;
 
         AlterEventRepeater evRepeater;        
@@ -17,9 +16,8 @@ namespace IRC_Client
         delegate void LVDelDelegate(User user);
 
 
-        public ServerInterface(ArrayList users, Client cli)
+        public ServerInterface(Client cli)
         {
-            this.users = users;
             this.cli = cli;
             
             InitializeComponent();
@@ -42,19 +40,24 @@ namespace IRC_Client
             switch (op)
             {
                 case Operation.NewUser:
-                    lvAdd = new LVAddDelegate(userListView.Items.Add);
-                    ListViewItem lvItem = new ListViewItem(new string[] { user.nickname });
-                    BeginInvoke(lvAdd, new object[] { lvItem });
+                    lvAdd = new LVAddDelegate(userListView.Items.Add);                   
+                    ListViewItem lvItem = new ListViewItem(new string[] { user.nickname });                    
+                    cli.addUserToList(user);  //update usersList                   
+                    BeginInvoke(lvAdd, new object[] { lvItem }); //change GUI
                     break;
                 case Operation.DelUser:
                     delUser = new LVDelDelegate(RemoveAItem);
-                    BeginInvoke(delUser, new object[] { user });
+                    BeginInvoke(delUser, new object[] { user }); //change GUI
                     break;
             }
         }
 
         private void RemoveAItem(User it)
         {
+            //remove da lista de utilizadores logados que o utilizador conhece
+            cli.removeUserFromList(it);
+
+            //remove da gui
             foreach (ListViewItem lvI in userListView.Items)
                 if (lvI.Text.Equals(it.nickname))
                 {
@@ -67,8 +70,9 @@ namespace IRC_Client
         {
             usernameLabel.Text = cli.myUser.nickname;
 
-            foreach (User us in users)
+            foreach (User us in cli.usersList)
             {
+                //não mostra o proprio utilizador na lista
                 if(us.nickname != cli.myUser.nickname)
                     userListView.Items.Add(us.nickname);
             }         
@@ -91,8 +95,6 @@ namespace IRC_Client
             evRepeater.alterEvent -= new AlterDelegate(DoAlterations);
 
             cli.logOut();
-
-            this.users = null;
         }
 
       
