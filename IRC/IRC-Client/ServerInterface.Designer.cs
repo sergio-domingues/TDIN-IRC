@@ -33,11 +33,13 @@ namespace IRC_Client
             this.userListView = new System.Windows.Forms.ListView();
             this.label1 = new System.Windows.Forms.Label();
             this.logOutButton = new System.Windows.Forms.Button();
+            this.UserLabel = new System.Windows.Forms.Label();
+            this.usernameLabel = new System.Windows.Forms.Label();
             this.SuspendLayout();
             // 
             // userListView
             // 
-            this.userListView.Location = new System.Drawing.Point(12, 38);
+            this.userListView.Location = new System.Drawing.Point(12, 59);
             this.userListView.Name = "userListView";
             this.userListView.Size = new System.Drawing.Size(87, 150);
             this.userListView.TabIndex = 0;
@@ -47,7 +49,7 @@ namespace IRC_Client
             // label1
             // 
             this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(12, 22);
+            this.label1.Location = new System.Drawing.Point(12, 43);
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(34, 13);
             this.label1.TabIndex = 1;
@@ -63,16 +65,38 @@ namespace IRC_Client
             this.logOutButton.UseVisualStyleBackColor = true;
             this.logOutButton.Click += new System.EventHandler(this.logOutButton_Click);
             // 
+            // UserLabel
+            // 
+            this.UserLabel.AutoSize = true;
+            this.UserLabel.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.UserLabel.Location = new System.Drawing.Point(12, 9);
+            this.UserLabel.Name = "UserLabel";
+            this.UserLabel.Size = new System.Drawing.Size(37, 13);
+            this.UserLabel.TabIndex = 3;
+            this.UserLabel.Text = "User:";
+            // 
+            // usernameLabel
+            // 
+            this.usernameLabel.AutoSize = true;
+            this.usernameLabel.Location = new System.Drawing.Point(56, 9);
+            this.usernameLabel.Name = "usernameLabel";
+            this.usernameLabel.Size = new System.Drawing.Size(53, 13);
+            this.usernameLabel.TabIndex = 4;
+            this.usernameLabel.Text = "username";
+            // 
             // ServerInterface
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(120, 261);
+            this.Controls.Add(this.usernameLabel);
+            this.Controls.Add(this.UserLabel);
             this.Controls.Add(this.logOutButton);
             this.Controls.Add(this.label1);
             this.Controls.Add(this.userListView);
             this.Name = "ServerInterface";
             this.Text = "ServerInterface";
+            this.FormClosed += new System.Windows.Forms.FormClosedEventHandler(this.ClientWindow_FormClosed);
             this.Load += new System.EventHandler(this.ServerInterface_Load);
             this.ResumeLayout(false);
             this.PerformLayout();
@@ -89,5 +113,7 @@ namespace IRC_Client
         private System.Windows.Forms.ListView userListView;
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.Button logOutButton;
+        private System.Windows.Forms.Label UserLabel;
+        private System.Windows.Forms.Label usernameLabel;
     }
 }

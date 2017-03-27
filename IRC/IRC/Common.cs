@@ -54,5 +54,18 @@ namespace IRC
         void DelUser(User user);
     }
 
-   
+    public class AlterEventRepeater : MarshalByRefObject
+    {
+        public event AlterDelegate alterEvent;
+
+        public override object InitializeLifetimeService()
+        {
+            return null;
+        }
+
+        public void Repeater(Operation op, User user)
+        {
+            alterEvent?.Invoke(op, user);
+        }
+    }
 }

@@ -73,10 +73,5 @@ namespace IRC_Client
             svProxy.logOut(myUser);
         }
 
-        //========================  
-
-
-
-
     }
 }

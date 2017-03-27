@@ -11,7 +11,7 @@ using System.Threading;
 namespace IRC_Server
 
 {
-    class Server : IRC.IServer 
+    class Server : IServer 
     {
         public int port { get; set; }
 
@@ -109,7 +109,6 @@ namespace IRC_Server
             return users;
         }
 
-
         public override object InitializeLifetimeService()
         {
             return null;
@@ -121,7 +120,6 @@ namespace IRC_Server
             users.Add(user);
             NotifyClients(Operation.NewUser, user);
         }
-
        
         public void DelUser(User user)
         {
@@ -143,9 +141,9 @@ namespace IRC_Server
     
         void NotifyClients(Operation op, User user)
         {
-            alterEvent?.Invoke(op, user);
+           // alterEvent?.Invoke(op, user);
 
-            /*if (alterEvent != null)
+            if (alterEvent != null)
             {
                 Delegate[] invkList = alterEvent.GetInvocationList();
 
@@ -164,7 +162,7 @@ namespace IRC_Server
                         }
                     }).Start();
                 }
-            }*/
+            }
         }
 
     }

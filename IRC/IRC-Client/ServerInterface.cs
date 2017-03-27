@@ -11,7 +11,7 @@ namespace IRC_Client
         ArrayList users;
         Client cli;
 
-        IServer.AlterEventRepeater evRepeater;        
+        AlterEventRepeater evRepeater;        
 
         delegate ListViewItem LVAddDelegate(ListViewItem lvItem);
         delegate void LVDelDelegate(User user);
@@ -24,7 +24,7 @@ namespace IRC_Client
             
             InitializeComponent();
 
-            evRepeater = new IServer.AlterEventRepeater();
+            evRepeater = new AlterEventRepeater();
             evRepeater.alterEvent += new AlterDelegate(DoAlterations);
             this.cli.svProxy.alterEvent += new AlterDelegate(evRepeater.Repeater);
         }
@@ -63,11 +63,15 @@ namespace IRC_Client
                 }
         }
 
-
         private void ServerInterface_Load(object sender, EventArgs e)
         {
-            foreach(User us in users)
-                userListView.Items.Add(us.nickname);           
+            usernameLabel.Text = cli.myUser.nickname;
+
+            foreach (User us in users)
+            {
+                if(us.nickname != cli.myUser.nickname)
+                    userListView.Items.Add(us.nickname);
+            }         
         }
 
         private void ClientWindow_FormClosed(object sender, FormClosedEventArgs e)
@@ -88,5 +92,7 @@ namespace IRC_Client
             this.Visible = false;
             this.users = null;
         }
+
+      
     }
 }

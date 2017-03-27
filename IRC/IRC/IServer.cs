@@ -14,21 +14,7 @@ namespace IRC
 
         public abstract void logOut(User us);
 
-        public class AlterEventRepeater : MarshalByRefObject
-        {
-            public event AlterDelegate alterEvent;
-
-            public override object InitializeLifetimeService()
-            {
-                return null;
-            }
-
-            public void Repeater(Operation op, User user)
-            {
-                if (alterEvent != null)
-                    alterEvent(op, user);
-            }
-        }
+       
 
     }
 }
