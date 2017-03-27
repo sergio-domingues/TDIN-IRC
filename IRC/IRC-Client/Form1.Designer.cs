@@ -121,6 +121,7 @@ namespace IRC_Client
             this.nicknameTextBox.Name = "nicknameTextBox";
             this.nicknameTextBox.Size = new System.Drawing.Size(177, 20);
             this.nicknameTextBox.TabIndex = 7;
+            this.nicknameTextBox.TextChanged += new System.EventHandler(this.nicknameTextBox_TextChanged);
             // 
             // Form1
             // 

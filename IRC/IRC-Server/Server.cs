@@ -4,7 +4,7 @@ using System.Runtime.Remoting.Channels;
 using System.Runtime.Serialization.Formatters;
 using System.Collections;
 using System.Runtime.Remoting.Channels.Tcp;
-using System.Collections.Generic;
+using System.Data.SQLite;
 using IRC;
 using System.Threading;
 
@@ -14,17 +14,25 @@ namespace IRC_Server
     class Server : IServer 
     {
         public int port { get; set; }
+        public Database db { get; set; }
       
         public ArrayList users = new ArrayList();
         
        public Server(int port)
         {
             this.port = port;
+
+            db = new Database();
+            db.logIn("asdasd", "12321321");
+
+
+
             SetupConfig();
         }
 
         public Server()
         {
+           // db = new Database();
         } 
 
         public void SetupConfig()
@@ -46,7 +54,7 @@ namespace IRC_Server
                 serverChannel.ChannelName);
 
             RemotingConfiguration.RegisterWellKnownServiceType(
-                     new Server().GetType(), "Server",
+                     this.GetType(), "Server",
                        WellKnownObjectMode.Singleton);
 
             // Parse the channel's URI.
@@ -63,9 +71,6 @@ namespace IRC_Server
 
         }
         
-        //se houveer problemas de comunicaçao adicionar container
-        //implementar como singleton
-
         public override ArrayList getUsersList()
         {
             return users;
@@ -74,10 +79,10 @@ namespace IRC_Server
         //TODO integration with db
         public override bool logIn(string nickname, string password, string address, int port)
         {            
-            Console.WriteLine("<Server - LOG IN> Username: " + nickname + " addr: " + address + " port: " + port);
+            Console.WriteLine("<Server - LOG IN> Username: " + nickname + " addr: " + address + " port: " + port);                      
 
-            //todo userexists -> DB
-            if (userLoggedIn(nickname) /*&& !userExists(nickname)*/)
+            //user already logged or user not found on db
+            if (userLoggedIn(nickname) || !db.logIn(nickname, password) )
                 return false;
 
             User newUser = new User(nickname, address, port);          
@@ -87,11 +92,8 @@ namespace IRC_Server
         }
        
         public override bool signUp(string username, string nickname, string password)
-        {
-            //TODO checkar se já existe um utilizador com o nickname de input
-            //CHAMADA à base de dados
-
-            return true;
+        {            
+            return db.signUp(username, nickname, password);
         }
 
         public override void logOut(User us)

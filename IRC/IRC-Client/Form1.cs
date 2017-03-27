@@ -25,7 +25,9 @@ namespace IRC_Client
         //login
         private void button1_Click(object sender, EventArgs e)
         {
-            bool loggedIn = cli.logIn(nicknameTextBox.Text, passwordTextBox.Text);
+            bool loggedIn;
+
+            loggedIn = cli.logIn(nicknameTextBox.Text, passwordTextBox.Text);
 
             if (loggedIn)
             {
@@ -33,27 +35,30 @@ namespace IRC_Client
                 ServerInterface serverInterface = new ServerInterface(cli);
                 serverInterface.ShowDialog();
                 Visible = true;
+            }
+            else
+            {
+                MessageBox.Show("Error! User already logged in or user does not exists on database.", "Log in",
+                    MessageBoxButtons.OK,
+                    MessageBoxIcon.Error);
             } 
-            /* else {  //todo show label "log in error"
-             *  
-             * 
-             * }   
-             * */              
         }
 
         //signup 
         private void button2_Click(object sender, EventArgs e)  //todo mudar de acordo com o metodo de signup do cliente
         {
-            string nick = nicknameTextBox.Text;
+            bool result;
 
-            cli.signUp(usernameTextBox.Text, nick, passwordTextBox.Text);
-            Visible = false;
+            result = cli.signUp(usernameTextBox.Text, nicknameTextBox.Text, passwordTextBox.Text);
 
-            //ServerInterface serverInterface = new ServerInterface(nick);
-           // serverInterface.ShowDialog();
-           // Visible = true;
+            MessageBox.Show(result == true ? "Success" : "Error", "Sign up",
+                MessageBoxButtons.OK,
+                result == true ? MessageBoxIcon.Information : MessageBoxIcon.Information);            
         }
 
+        private void nicknameTextBox_TextChanged(object sender, EventArgs e)
+        {
 
+        }
     }
 }

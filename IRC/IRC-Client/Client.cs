@@ -80,10 +80,11 @@ namespace IRC_Client
             usersList.Add(us);
         }
 
-        public void signUp(string username, string nickname, string password)
+        public bool signUp(string username, string nickname, string password)
         {  // Invoke a method on the remote object.
             Console.WriteLine("<CLI - SIGN UP> The client is invoking the remote object.");
-            Console.WriteLine("CLI - SIGN UP result: " + svProxy.signUp(username, nickname, password));
+
+            return svProxy.signUp(username, nickname, password);
         }
         
         public void logOut()
