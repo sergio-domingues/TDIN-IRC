@@ -1,54 +1,59 @@
-﻿using System;
+﻿using IRC;
+using System;
+using System.Collections;
+using System.Collections.Generic;
+using System.Linq;
 using System.Runtime.Remoting;
 using System.Runtime.Remoting.Channels;
-using System.Runtime.Serialization.Formatters;
-using System.Collections;
 using System.Runtime.Remoting.Channels.Tcp;
+using System.Runtime.Serialization.Formatters;
+using System.Text;
+using System.Threading.Tasks;
+using static IRC_Client.Intermediate;
 
-namespace IRC_Server
-
+namespace IRC_Client
 {
-    class Server : IRC.IServer 
+    class ClientRemote : IClient
     {
+
+
         public int port { get; set; }
 
-        
-        
-        public Server(int port)
+        public ClientRemote(int port)
         {
             this.port = port;
-            SetupConfig();
+            Console.WriteLine("REMOTE PORT " + port);
+            Config();
         }
 
-        public Server()
-        {
-        } 
+        public ClientRemote() { }
 
-        public void SetupConfig()
+        public void Config()
         {
             BinaryServerFormatterSinkProvider provider = new BinaryServerFormatterSinkProvider();
             provider.TypeFilterLevel = TypeFilterLevel.Full;
 
             IDictionary props = new Hashtable();
             props["port"] = port;
+            Console.WriteLine("REMOTE PORT " + port);
 
             // Create the server channel.
             TcpChannel serverChannel = new TcpChannel(props, null, provider);
 
-            
+
             // Register the server channel.
-            ChannelServices.RegisterChannel(serverChannel, false);
+            //ChannelServices.RegisterChannel(serverChannel, false);
 
             // Show the name of the channel.
             Console.WriteLine("The name of the channel is {0}.",
                 serverChannel.ChannelName);
 
             RemotingConfiguration.RegisterWellKnownServiceType(
-                     new Server().GetType(), "Server",
+                     new ClientRemote().GetType(), "ClientRemote",
                        WellKnownObjectMode.Singleton);
 
             // Parse the channel's URI.
-            string[] urls = serverChannel.GetUrlsForUri("Server");
+            string[] urls = serverChannel.GetUrlsForUri("ClientRemote");
             if (urls.Length > 0)
             {
                 string objectUrl = urls[0];
@@ -60,33 +65,18 @@ namespace IRC_Server
             }
 
         }
+
+
         
-        //se houveer problemas de comunicaçao adicionar container
-        //implementar como singleton
-        private int callCount = 0;
+        public event MessageReceived MessageArrived;
 
-        public int GetCount()
+        public List<Message> messageList = new List<Message>();
+
+        public override void ReceiveMessage(String user, String msg, DateTime time)
         {
-            Console.WriteLine("Users logged:" + callCount);
-            callCount++;
-            return (callCount);
+            
+            Client.instance.ReceiveMessage(new Message { sender = user, message = msg, timestamp = time });
         }
 
-        public override string logIn(string nickname, string password)
-        {
-            return "<Server - LOG IN> Username: " + nickname + " password: " + password;
-        }
-
-        public override string signUp(string username, string nickname, string password)
-        {
-            return "<Server - SIGN UP> Username: " + nickname + " password: " + password + " realname:" + username;
-        }
-
-        public override string logOut()
-        {
-            throw new NotImplementedException();
-        }
     }
-
-
 }
