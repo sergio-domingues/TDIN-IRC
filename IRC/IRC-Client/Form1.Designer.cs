@@ -30,6 +30,7 @@ namespace IRC_Client
         /// </summary>
         private void InitializeComponent()
         {
+            this.components = new System.ComponentModel.Container();
             this.button1 = new System.Windows.Forms.Button();
             this.button2 = new System.Windows.Forms.Button();
             this.usernameTextBox = new System.Windows.Forms.TextBox();
@@ -39,6 +40,8 @@ namespace IRC_Client
             this.label3 = new System.Windows.Forms.Label();
             this.label4 = new System.Windows.Forms.Label();
             this.nicknameTextBox = new System.Windows.Forms.TextBox();
+            this.errorProvider1 = new System.Windows.Forms.ErrorProvider(this.components);
+            ((System.ComponentModel.ISupportInitialize)(this.errorProvider1)).BeginInit();
             this.SuspendLayout();
             // 
             // button1
@@ -123,6 +126,10 @@ namespace IRC_Client
             this.nicknameTextBox.TabIndex = 7;
             this.nicknameTextBox.TextChanged += new System.EventHandler(this.nicknameTextBox_TextChanged);
             // 
+            // errorProvider1
+            // 
+            this.errorProvider1.ContainerControl = this;
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -140,6 +147,7 @@ namespace IRC_Client
             this.Name = "Form1";
             this.Text = "Form1";
             this.Load += new System.EventHandler(this.Form1_Load);
+            ((System.ComponentModel.ISupportInitialize)(this.errorProvider1)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -171,6 +179,7 @@ namespace IRC_Client
         private System.Windows.Forms.Label label3;
         private System.Windows.Forms.Label label4;
         private System.Windows.Forms.TextBox nicknameTextBox;
+        private System.Windows.Forms.ErrorProvider errorProvider1;
     }
 }
 

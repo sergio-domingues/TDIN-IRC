@@ -14,13 +14,13 @@ namespace IRC_Server
         public Database()
         {
             Console.WriteLine("Database created.");
-            m_dbConnection = new SQLiteConnection("Data Source = ./database.db; Version=3;");
+            m_dbConnection = new SQLiteConnection("Data Source = ../../database.db; Version=3;");
         }
 
         public bool logIn(string nickname, string password)
         {
-            string sql = "select * from user where username = '" + nickname + "' and password = '" + password + "';";
-            return executeQuery(sql);            
+            string sql = "select * from User where username = '" + nickname + "' and password = '" + password + "';";
+            return executeQuery(sql);
         }
 
         public bool signUp(string realname, string nickname, string password)
@@ -30,25 +30,32 @@ namespace IRC_Server
             queryCheck = "select * from User where username = '" + nickname + "' and password = '" + password + "';";
             queryAdd = "insert into User(username, password, name) VALUES('" + nickname + "' , '" + password + "' , '" + realname + "' );";
 
-            if (executeQuery(queryCheck))
+            if (executeQuery(queryCheck)) //user already exists
+            {
+                Console.WriteLine("<DB> ERROR: User already exists!");
                 return false;
-
-            if (executeQuery(queryCheck))  //user already exists
-                return false;
+            }
             else
-                return executeQuery(queryAdd);            
+            {
+                Console.WriteLine("<DB> Success!");
+                return !executeQuery(queryAdd);    //por algum motivo adiciona o utilizador na db mas retorna false, talvez relacionado com keys da tabela ....
+            }
         }
 
         private bool executeQuery(string query)
         {
             SQLiteDataReader success;
+            bool result;
+
             m_dbConnection.Open();
 
             SQLiteCommand command = new SQLiteCommand(query, m_dbConnection);
             success = command.ExecuteReader();
 
+            result = success.Read();
+
             m_dbConnection.Close();
-            return success.Read();
+            return result;
         }
     }
 }

@@ -21,18 +21,14 @@ namespace IRC_Server
        public Server(int port)
         {
             this.port = port;
-
-            db = new Database();
-            db.logIn("asdasd", "12321321");
-
-
-
+            db = new Database();            
             SetupConfig();
         }
 
         public Server()
         {
-           // db = new Database();
+           if( db == null)
+                db = new Database();
         } 
 
         public void SetupConfig()
@@ -52,6 +48,8 @@ namespace IRC_Server
             // Show the name of the channel.
             Console.WriteLine("The name of the channel is {0}.",
                 serverChannel.ChannelName);
+
+            Console.WriteLine(this.GetType());
 
             RemotingConfiguration.RegisterWellKnownServiceType(
                      this.GetType(), "Server",
@@ -92,8 +90,11 @@ namespace IRC_Server
         }
        
         public override bool signUp(string username, string nickname, string password)
-        {            
-            return db.signUp(username, nickname, password);
+        {
+            Console.WriteLine("<Server - sign up> Username: " + nickname + "  pw" + password);
+            bool res = db.signUp(username, nickname, password);
+            return res;
+            //return db.signUp(username, nickname, password);
         }
 
         public override void logOut(User us)
