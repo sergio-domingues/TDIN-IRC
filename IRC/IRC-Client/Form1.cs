@@ -31,10 +31,10 @@ namespace IRC_Client
 
             if (loggedIn)
             {
-                Visible = false;
-                ServerInterface serverInterface = new ServerInterface(cli);
-                serverInterface.ShowDialog();
-                Visible = true;
+                Hide();
+                ServerInterface serverInterface = new ServerInterface(cli, this);
+                serverInterface.Show();
+                //Visible = true;
             }
             else
             {

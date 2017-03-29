@@ -9,6 +9,7 @@ namespace IRC_Client
     public partial class ServerInterface : Form
     {       
         Client cli;
+        Form1 homePage;
 
         AlterEventRepeater evRepeater;        
 
@@ -16,10 +17,11 @@ namespace IRC_Client
         delegate void LVDelDelegate(User user);
 
 
-        public ServerInterface(Client cli)
+        public ServerInterface(Client cli, Form1 form)
         {
             this.cli = cli;
-            
+            homePage = form;
+
             InitializeComponent();
 
             evRepeater = new AlterEventRepeater();
@@ -81,12 +83,15 @@ namespace IRC_Client
         private void ClientWindow_FormClosed(object sender, FormClosedEventArgs e)
         {
             logOutAux();
+            homePage.Show();
         }
 
         private void logOutButton_Click(object sender, EventArgs e)
         {
             logOutAux();
-            this.Visible = false;
+            //this.Visible = false;
+            Hide();
+            homePage.Show();
         }
 
         private void logOutAux()

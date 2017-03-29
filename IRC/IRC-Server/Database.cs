@@ -44,6 +44,8 @@ namespace IRC_Server
 
         private bool executeQuery(string query)
         {
+            //TODO add throw catch clauses to prevent issues .... maybe
+
             SQLiteDataReader success;
             bool result;
 
