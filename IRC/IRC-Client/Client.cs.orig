@@ -14,12 +14,19 @@ namespace IRC_Client
 {
     public class Client
     {
+        public static Client instance;
         int svPort;
+<<<<<<< HEAD
         public IServer svProxy;
         public User myUser;
         public ArrayList usersList;
+
+=======
+        public int cliPort;
+        IServer svProxy;
         bool loggedIn = false;
         Form1 chat;
+>>>>>>> ClientSide
 
         public Dictionary<string, IClient> connected = new Dictionary<string, IClient>();
 
@@ -29,6 +36,10 @@ namespace IRC_Client
 
         public Client(int svPort, int cliPort)
         {
+<<<<<<< HEAD
+            svPort = port;
+            setupConfig();
+=======
             this.svPort = svPort;
             this.cliPort = cliPort;
             
@@ -60,6 +71,7 @@ namespace IRC_Client
                     testEvent -= listener;
                 }
             }
+>>>>>>> ClientSide
         }
 
         public void setupConfig()
@@ -74,6 +86,30 @@ namespace IRC_Client
 
             // Register the channel.
             ChannelServices.RegisterChannel(clientChannel, false);
+<<<<<<< HEAD
+=======
+/*
+            // Register as client for remote object.
+            WellKnownClientTypeEntry remoteType = new WellKnownClientTypeEntry(
+                typeof(IServer), "tcp://localhost:" + svPort + "/Server");
+            RemotingConfiguration.RegisterWellKnownClientType(remoteType);  
+
+            // Create a message sink.
+            string objectUri;
+            System.Runtime.Remoting.Messaging.IMessageSink messageSink =
+                clientChannel.CreateMessageSink(
+                    "tcp://localhost:"+ svPort + "/Server", null,
+                    out objectUri);
+            Console.WriteLine("The URI of the message sink is {0}.",
+                objectUri);
+            if (messageSink != null)
+            {
+                Console.WriteLine("The type of the message sink is {0}.",
+                    messageSink.GetType().ToString());
+            } 
+   */         
+            //==================================================
+>>>>>>> ClientSide
 
             // Create an instance of the remote object.
             svProxy = (IServer)Activator.GetObject(typeof(IServer),
@@ -83,6 +119,7 @@ namespace IRC_Client
         public bool logIn(string nickname, string password)
         {            
             Console.WriteLine("<LOG IN> The client is invoking the remote object.");
+<<<<<<< HEAD
 
             //TODO access to this client peercomunication service address / port
             string address = "TODO:HARDCODED";
@@ -109,12 +146,19 @@ namespace IRC_Client
             //Console.WriteLine("Log in result: " + users.ToString());
             return true;
         }
-		
-//TODO merge login methods
-		/*
-		public void logIn(string nickname, string password)
-        {  // Invoke a method on the remote object.
-            Console.WriteLine("<LOG IN> The client is invoking the remote object.");
+
+        internal void removeUserFromList(User us)
+        {
+            usersList.Remove(us);
+        }
+
+        internal void addUserToList(User us)
+        {
+            usersList.Add(us);
+        }
+
+        public bool signUp(string username, string nickname, string password)
+=======
             Console.WriteLine("Log in result: " +  svProxy.logIn(nickname, password));
 
             //initialize remote client object
@@ -170,21 +214,14 @@ namespace IRC_Client
             //chat.Show();
             
 
-        } */
-
-
-
-        internal void removeUserFromList(User us)
-        {
-            usersList.Remove(us);
         }
 
-        internal void addUserToList(User us)
-        {
-            usersList.Add(us);
-        }
+        
 
-        public bool signUp(string username, string nickname, string password)
+        
+
+        public void signUp(string username, string nickname, string password)
+>>>>>>> ClientSide
         {  // Invoke a method on the remote object.
             Console.WriteLine("<CLI - SIGN UP> The client is invoking the remote object.");
 
