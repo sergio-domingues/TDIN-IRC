@@ -156,7 +156,7 @@ namespace IRC_Client
             IClient cliProxy = (IClient)Activator.GetObject(typeof(IClient),
                     "tcp://localhost:" + peerPort + "/ClientRemote");
 
-            acceptedConnection = cliProxy.queryChat(peer);
+            acceptedConnection = cliProxy.queryChat(myUser.nickname);
 
             if (acceptedConnection)
             {
