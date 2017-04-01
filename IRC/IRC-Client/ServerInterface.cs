@@ -7,17 +7,17 @@ using System.Windows.Forms;
 namespace IRC_Client
 {
     public partial class ServerInterface : Form
-    {       
+    {
         Client cli;
-        Form1 homePage;
+        Homepage homePage;
 
-        AlterEventRepeater evRepeater;        
+        AlterEventRepeater evRepeater;
 
         delegate ListViewItem LVAddDelegate(ListViewItem lvItem);
         delegate void LVDelDelegate(User user);
 
-
-        public ServerInterface(Client cli, Form1 form)
+        //=================================================
+        public ServerInterface(Client cli, Homepage form)
         {
             this.cli = cli;
             homePage = form;
@@ -42,8 +42,8 @@ namespace IRC_Client
             switch (op)
             {
                 case Operation.NewUser:
-                    lvAdd = new LVAddDelegate(userListView.Items.Add);                   
-                    ListViewItem lvItem = new ListViewItem(new string[] { user.nickname });                    
+                    lvAdd = new LVAddDelegate(userListView.Items.Add);
+                    ListViewItem lvItem = new ListViewItem(new string[] { user.nickname });
                     cli.addUserToList(user);  //update usersList                   
                     BeginInvoke(lvAdd, new object[] { lvItem }); //change GUI
                     break;
@@ -75,22 +75,25 @@ namespace IRC_Client
             foreach (User us in cli.usersList)
             {
                 //não mostra o proprio utilizador na lista
-                if(us.nickname != cli.myUser.nickname)
+                if (us.nickname != cli.myUser.nickname)
                     userListView.Items.Add(us.nickname);
-            }         
+            }
         }
 
         private void ClientWindow_FormClosed(object sender, FormClosedEventArgs e)
         {
             logOutAux();
+            cli.chat.Hide();
             homePage.Show();
         }
 
         private void logOutButton_Click(object sender, EventArgs e)
         {
             logOutAux();
-            //this.Visible = false;
+
             Hide();
+            cli.chat.Hide();
+
             homePage.Show();
         }
 
@@ -102,6 +105,26 @@ namespace IRC_Client
             cli.logOut();
         }
 
-      
+        //when client clicks on list to connect to peer for chatting
+        private void userListView_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            ListView.SelectedListViewItemCollection users;
+            bool connected;
+
+            users = userListView.SelectedItems;
+
+            Console.WriteLine("Requesting chat to: " + users[0].Text);
+
+            //queries peer and if he accepts, connects Chat
+            connected = cli.queryForConnection(users[0].Text);
+
+            if (!connected)
+            {
+                MessageBox.Show( "User rejected conversation.", "Chat invitation",
+                   MessageBoxButtons.OK, MessageBoxIcon.Information);
+            }
+
+        }
+
     }
 }

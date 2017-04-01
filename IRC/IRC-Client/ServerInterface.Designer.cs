@@ -103,10 +103,7 @@ namespace IRC_Client
 
         }
 
-        private void userListView_SelectedIndexChanged(object sender, EventArgs e)
-        {
-            throw new NotImplementedException();
-        }
+
 
         #endregion
 

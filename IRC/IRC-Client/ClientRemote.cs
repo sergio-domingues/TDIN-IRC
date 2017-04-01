@@ -9,74 +9,69 @@ using System.Runtime.Remoting.Channels.Tcp;
 using System.Runtime.Serialization.Formatters;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Forms;
 using static IRC_Client.Intermediate;
 
 namespace IRC_Client
 {
-    class ClientRemote : IClient
+    public class ClientRemote : IClient
     {
+        public string port { get; set; }
 
-
-        public int port { get; set; }
-
-        public ClientRemote(int port)
+        public List<Intermediate.Message> messageList = new List<Intermediate.Message>();
+        public ClientRemote(bool nothing)
         {
-            this.port = port;
-            Console.WriteLine("REMOTE PORT " + port);
-            Config();
+            port = Config();
         }
 
-        public ClientRemote() { }
-
-        public void Config()
+        public ClientRemote()
         {
-            BinaryServerFormatterSinkProvider provider = new BinaryServerFormatterSinkProvider();
-            provider.TypeFilterLevel = TypeFilterLevel.Full;
+        }
+
+        public string Config()
+        {
+            BinaryClientFormatterSinkProvider clProvider = new BinaryClientFormatterSinkProvider();
+            BinaryServerFormatterSinkProvider svProvider = new BinaryServerFormatterSinkProvider();
+            svProvider.TypeFilterLevel = TypeFilterLevel.Full;
 
             IDictionary props = new Hashtable();
-            props["port"] = port;
-            Console.WriteLine("REMOTE PORT " + port);
+            props["name"] = "remotingClient";
+            props["port"] = 0;
 
-            // Create the server channel.
-            TcpChannel serverChannel = new TcpChannel(props, null, provider);
+            // Create the channel.
+            TcpChannel clientChannel = new TcpChannel(props, clProvider, svProvider);
 
+            // Register the channel.
+            //ChannelServices.RegisterChannel(clientChannel, false);
 
-            // Register the server channel.
-            //ChannelServices.RegisterChannel(serverChannel, false);
+            //get port
+            var channelData = (ChannelDataStore)clientChannel.ChannelData;
+            string port = new Uri(channelData.ChannelUris[0]).Port.ToString();
 
             // Show the name of the channel.
-            Console.WriteLine("The name of the channel is {0}.",
-                serverChannel.ChannelName);
+            Console.WriteLine("The port of the channel is {0}.", port);
 
             RemotingConfiguration.RegisterWellKnownServiceType(
-                     new ClientRemote().GetType(), "ClientRemote",
+                     this.GetType(), "ClientRemote",
                        WellKnownObjectMode.Singleton);
 
-            // Parse the channel's URI.
-            string[] urls = serverChannel.GetUrlsForUri("ClientRemote");
-            if (urls.Length > 0)
-            {
-                string objectUrl = urls[0];
-                string objectUri;
-                string channelUri = serverChannel.Parse(objectUrl, out objectUri);
-                Console.WriteLine("The object URL is {0}.", objectUrl);
-                Console.WriteLine("The object URI is {0}.", objectUri);
-                Console.WriteLine("The channel URI is {0}.", channelUri);
-            }
-
+            return port;
         }
-
-
-        
-        public event MessageReceived MessageArrived;
-
-        public List<Message> messageList = new List<Message>();
 
         public override void ReceiveMessage(String user, String msg, DateTime time)
         {
-            
-            Client.instance.ReceiveMessage(new Message { sender = user, message = msg, timestamp = time });
+            Client.instance.ReceiveMessage(new Intermediate.Message { sender = user, message = msg, timestamp = time });
         }
 
+        public override bool queryChat(string peerName)
+        {
+            string queryMsg;
+            DialogResult dialogResult;
+
+            queryMsg = peerName + " wants to start a chat with you. You want to connect to it?";
+            dialogResult = MessageBox.Show(queryMsg, "Chat invitation", MessageBoxButtons.YesNo);
+
+            return (dialogResult == DialogResult.Yes ? true : false);
+        }
     }
 }

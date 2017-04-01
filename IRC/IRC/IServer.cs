@@ -8,7 +8,7 @@ namespace IRC
     {
 
         public abstract event AlterDelegate alterEvent;
-        public abstract bool logIn(string nickname, string password, string address, int port);
+        public abstract bool logIn(string nickname, string password, string address, string port);
 
         public abstract bool signUp(string username, string nickname, string password);
 

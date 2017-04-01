@@ -4,11 +4,11 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{78ADB387-B268-4665-8E34-64E926A8269F}</ProjectGuid>
-    <OutputType>WinExe</OutputType>
+    <ProjectGuid>{2B0158A1-C6D3-4E46-B83C-06167B246CDC}</ProjectGuid>
+    <OutputType>Exe</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>IRC_Client</RootNamespace>
-    <AssemblyName>IRC-Client</AssemblyName>
+    <RootNamespace>IRC</RootNamespace>
+    <AssemblyName>IRC</AssemblyName>
     <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
@@ -63,91 +63,23 @@
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="System.Data" />
-    <Reference Include="System.Deployment" />
-    <Reference Include="System.Drawing" />
     <Reference Include="System.Net.Http" />
-    <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="ChatInterface.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="ChatInterface.Designer.cs">
-      <DependentUpon>ChatInterface.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Client.cs" />
-    <Compile Include="ClientRemote.cs" />
+<<<<<<< HEAD
     <Compile Include="Common.cs" />
-    <Compile Include="Homepage.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="Homepage.Designer.cs">
-      <DependentUpon>Homepage.cs</DependentUpon>
-    </Compile>
-    <Compile Include="ClientLauncher.cs" />
+=======
+    <Compile Include="IClient.cs" />
+>>>>>>> ClientSide
+    <Compile Include="IServer.cs" />
+    <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="ServerInterface.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="ServerInterface.Designer.cs">
-      <DependentUpon>ServerInterface.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Tab.cs">
-      <SubType>UserControl</SubType>
-    </Compile>
-    <Compile Include="Tab.Designer.cs">
-      <DependentUpon>Tab.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Tabcontrol.cs">
-      <SubType>UserControl</SubType>
-    </Compile>
-    <Compile Include="Tabcontrol.Designer.cs">
-      <DependentUpon>Tabcontrol.cs</DependentUpon>
-    </Compile>
-    <EmbeddedResource Include="ChatInterface.resx">
-      <DependentUpon>ChatInterface.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Homepage.resx">
-      <DependentUpon>Homepage.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Properties\Resources.resx">
-      <Generator>ResXFileCodeGenerator</Generator>
-      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
-      <SubType>Designer</SubType>
-    </EmbeddedResource>
-    <Compile Include="Properties\Resources.Designer.cs">
-      <AutoGen>True</AutoGen>
-      <DependentUpon>Resources.resx</DependentUpon>
-    </Compile>
-    <EmbeddedResource Include="ServerInterface.resx">
-      <DependentUpon>ServerInterface.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Tab.resx">
-      <DependentUpon>Tab.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Tabcontrol.resx">
-      <DependentUpon>Tabcontrol.cs</DependentUpon>
-    </EmbeddedResource>
-    <None Include="packages.config" />
-    <None Include="Properties\Settings.settings">
-      <Generator>SettingsSingleFileGenerator</Generator>
-      <LastGenOutput>Settings.Designer.cs</LastGenOutput>
-    </None>
-    <Compile Include="Properties\Settings.Designer.cs">
-      <AutoGen>True</AutoGen>
-      <DependentUpon>Settings.settings</DependentUpon>
-      <DesignTimeSharedInput>True</DesignTimeSharedInput>
-    </Compile>
+    <Compile Include="User.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
-  </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\IRC\IRC.csproj">
-      <Project>{2b0158a1-c6d3-4e46-b83c-06167b246cdc}</Project>
-      <Name>IRC</Name>
-    </ProjectReference>
+    <None Include="packages.config" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="..\packages\System.Data.SQLite.Core.1.0.104.0\build\net451\System.Data.SQLite.Core.targets" Condition="Exists('..\packages\System.Data.SQLite.Core.1.0.104.0\build\net451\System.Data.SQLite.Core.targets')" />

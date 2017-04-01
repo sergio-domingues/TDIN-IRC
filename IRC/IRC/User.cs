@@ -11,9 +11,9 @@ namespace IRC
     {
         public string nickname { get; set; }
         public string address { get; set; }
-        public int port { get; set; }
+        public string port { get; set; }
 
-        public User(string nick, string address, int port)
+        public User(string nick, string address, string port)
         {
             nickname = nick;
             this.address = address;

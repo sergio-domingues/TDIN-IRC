@@ -1,8 +1,10 @@
 ﻿using System;
-
+<<<<<<< HEAD
 using System.Collections;
 using System.Collections.Generic;
+=======
 using System.Drawing;
+>>>>>>> ClientSide
 using System.Windows.Forms;
 
 namespace IRC_Client
@@ -24,16 +26,8 @@ namespace IRC_Client
         //login
         private void button1_Click(object sender, EventArgs e)
         {
+<<<<<<< HEAD
             bool loggedIn;
-            
-            if (usernameTextBox.Text != null && usernameTextBox.Text.Length > 0)
-            {
-                Int32.TryParse(usernameTextBox.Text, out cli.TEST);
-            }
-            changeForm();
-            if (cli.TEST != -1) {
-                cli.connectChat(cli.TEST);
-            }
 
             loggedIn = cli.logIn(nicknameTextBox.Text, passwordTextBox.Text);
 
@@ -50,12 +44,25 @@ namespace IRC_Client
                     MessageBoxButtons.OK,
                     MessageBoxIcon.Error);
             } 
+=======
             
+            if (usernameTextBox.Text != null && usernameTextBox.Text.Length > 0)
+            {
+                Int32.TryParse(usernameTextBox.Text, out cli.TEST);
+            }
+            changeForm();
+            if (cli.TEST != -1) {
+                cli.connectChat(cli.TEST);
+            }
+            cli.logIn(nicknameTextBox.Text, passwordTextBox.Text);
+            
+>>>>>>> ClientSide
         }
 
         //signup 
         private void button2_Click(object sender, EventArgs e)  //todo mudar de acordo com o metodo de signup do cliente
         {
+<<<<<<< HEAD
             bool result;
 
             result = cli.signUp(usernameTextBox.Text, nicknameTextBox.Text, passwordTextBox.Text);
@@ -67,6 +74,12 @@ namespace IRC_Client
 
         private void nicknameTextBox_TextChanged(object sender, EventArgs e)
         {
+
+=======
+            cli.signUp(usernameTextBox.Text, nicknameTextBox.Text, passwordTextBox.Text);
+            
+        }
+
         public void ReceiveMessage(IRC_Client.Intermediate.Message msg)
         {
             
@@ -106,6 +119,7 @@ namespace IRC_Client
         internal void AddTab(string receiver, Intermediate.Message msg)
         {
             tabcontrol.AddNewTab(receiver, msg);
+>>>>>>> ClientSide
         }
     }
 }

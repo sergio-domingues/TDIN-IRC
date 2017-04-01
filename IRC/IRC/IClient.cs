@@ -9,5 +9,7 @@ namespace IRC
     public abstract class IClient: MarshalByRefObject
     {
         public abstract void ReceiveMessage(String user, String msg, DateTime time);
+
+        public abstract bool queryChat(string peerName);
     }
 }

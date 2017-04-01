@@ -24,7 +24,7 @@ namespace IRC_Client
             cli.testEvent += ReceiveMessage;
         }
 
-        public Tab(Client cli, string receiver, IRC_Client.Intermediate.Message first)
+        public Tab(Client cli, string receiver, Intermediate.Message first)
         {
             this.cli = cli;
             this.receiver = receiver;
@@ -33,7 +33,7 @@ namespace IRC_Client
             listBox1.Items.Add(first.message);
         }
 
-        public void ReceiveMessage(IRC_Client.Intermediate.Message msg)
+        public void ReceiveMessage(Intermediate.Message msg)
         {
             if (msg.sender == receiver) {
                 listBox1.Items.Add(msg.message);
@@ -42,7 +42,7 @@ namespace IRC_Client
 
         private void button1_Click(object sender, EventArgs e)
         {   
-            cli.sendMessage(cli.cliPort.ToString(), textBox1.Text, receiver);
+            cli.sendMessage(textBox1.Text, receiver);
             listBox1.Items.Add("You: " + textBox1.Text);
         }
     }

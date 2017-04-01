@@ -13,12 +13,12 @@ namespace IRC_Server
 {
     class Server : IServer 
     {
-        public int port { get; set; }
+        public string port { get; set; }
         public Database db { get; set; }
       
         public ArrayList users = new ArrayList();
         
-       public Server(int port)
+       public Server(string port)
         {
             this.port = port;
             db = new Database();            
@@ -73,9 +73,8 @@ namespace IRC_Server
         {
             return users;
         }
-
-        //TODO integration with db
-        public override bool logIn(string nickname, string password, string address, int port)
+        
+        public override bool logIn(string nickname, string password, string address, string port)
         {            
             Console.WriteLine("<Server - LOG IN> Username: " + nickname + " addr: " + address + " port: " + port);                      
 
@@ -112,6 +111,7 @@ namespace IRC_Server
             }
             return false;
         }
+       
         //===========================Remote events
 
         public override event AlterDelegate alterEvent;

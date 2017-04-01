@@ -16,18 +16,12 @@ namespace IRC_Client
         [STAThread]
         static void Main(string[] args)
         {
+            Client cli = new Client("9000");
 
-            ClientRemote cli_r = new ClientRemote(Int32.Parse(args[0]));
-            Client cli = new Client(9000, Int32.Parse(args[0]));
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
-            Form1 chat = new Form1(cli);
-            cli.setForm(chat);
             
-
-            
-            Application.Run(chat);
-
+            Application.Run(new Homepage(cli));
         }
 
         public static int GetFreeTcpPort()

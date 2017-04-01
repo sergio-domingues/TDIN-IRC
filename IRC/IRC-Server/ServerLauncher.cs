@@ -20,7 +20,7 @@ namespace IRC_Server
         [STAThread]
         static void Main()
         {
-            Server sv = new Server(9000);
+            Server sv = new Server("9000");
 
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
