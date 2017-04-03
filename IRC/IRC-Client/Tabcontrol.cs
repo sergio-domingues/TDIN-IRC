@@ -14,6 +14,9 @@ namespace IRC_Client
     public partial class Tabcontrol : UserControl
     {
         Client cli;
+        Dictionary<string, TabPage> tabList = new Dictionary<string, TabPage>();
+
+       
 
         public Tabcontrol(Client cli)
         {
@@ -21,13 +24,14 @@ namespace IRC_Client
             InitializeComponent();
         }
 
-        public void AddNewTab(string receiver)
+        public void AddNewTab(string receiver, string user)
         {
             
-            Tab myUserControl = new Tab(cli, receiver);
+            Tab myUserControl = new Tab(cli, receiver, this, user);
             myUserControl.Dock = DockStyle.Fill;
-            TabPage myTabPage = new TabPage();//Create new tabpage
+            TabPage myTabPage = new TabPage(user);//Create new tabpage
             myTabPage.Controls.Add(myUserControl);
+            tabList.Add(receiver, myTabPage);
             //tabControl1.TabPages.Add(myTabPage);
             tabControl1.Invoke(new Action(() => tabControl1.TabPages.Add(myTabPage)));
             
@@ -35,12 +39,29 @@ namespace IRC_Client
 
         internal void AddNewTab(string receiver, Intermediate.Message msg)
         {
-            Tab myUserControl = new Tab(cli, receiver, msg);
+            
+            Tab myUserControl = new Tab(cli, receiver, this, msg);
             myUserControl.Dock = DockStyle.Fill;
-            TabPage myTabPage = new TabPage();//Create new tabpage
+            TabPage myTabPage = new TabPage(msg.port);//Create new tabpage
             myTabPage.Controls.Add(myUserControl);
+            tabList.Add(receiver, myTabPage);
             //tabControl1.TabPages.Add(myTabPage);
             tabControl1.Invoke(new Action(() => tabControl1.TabPages.Add(myTabPage)));
+            
         }
+
+        public void RemoveTab(string receiver) {
+            
+            TabPage toRemove;
+            if (tabList.TryGetValue(receiver, out toRemove)) {
+                tabList.Remove(receiver);
+                tabControl1.Invoke(new Action(() => tabControl1.TabPages.Remove(toRemove)));
+            }
+            
+        }
+
+       
+
+
     }
 }

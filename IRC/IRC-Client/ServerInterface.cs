@@ -108,21 +108,19 @@ namespace IRC_Client
         //when client clicks on list to connect to peer for chatting
         private void userListView_SelectedIndexChanged(object sender, EventArgs e)
         {
-            ListView.SelectedListViewItemCollection users;
-            bool connected;
+            ListViewItem users;
 
-            users = userListView.SelectedItems;
+            users = userListView.FocusedItem;
 
-            Console.WriteLine("Requesting chat to: " + users[0].Text);
+            //Console.WriteLine("Requesting chat to: " + users.Text);
 
-            //queries peer and if he accepts, connects Chat
-            connected = cli.queryForConnection(users[0].Text);
+            
+            cli.queryForConnection(users.Text);
 
-            if (!connected)
-            {
-                MessageBox.Show( "User rejected conversation.", "Chat invitation",
-                   MessageBoxButtons.OK, MessageBoxIcon.Information);
-            }
+        }
+
+        private void disconnect_Chat()
+        {
 
         }
 

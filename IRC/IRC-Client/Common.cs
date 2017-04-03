@@ -14,6 +14,7 @@ namespace IRC_Client
         public class Message
         {
             public String sender;
+            public string port;
             public String message;
             public DateTime timestamp;
         }

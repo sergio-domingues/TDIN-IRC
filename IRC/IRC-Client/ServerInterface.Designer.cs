@@ -39,7 +39,7 @@ namespace IRC_Client
             // 
             // userListView
             // 
-            this.userListView.Location = new System.Drawing.Point(12, 59);
+            this.userListView.Location = new System.Drawing.Point(93, 58);
             this.userListView.Name = "userListView";
             this.userListView.Size = new System.Drawing.Size(87, 150);
             this.userListView.TabIndex = 0;
@@ -49,7 +49,7 @@ namespace IRC_Client
             // label1
             // 
             this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(12, 43);
+            this.label1.Location = new System.Drawing.Point(119, 42);
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(34, 13);
             this.label1.TabIndex = 1;
@@ -57,7 +57,7 @@ namespace IRC_Client
             // 
             // logOutButton
             // 
-            this.logOutButton.Location = new System.Drawing.Point(12, 226);
+            this.logOutButton.Location = new System.Drawing.Point(93, 226);
             this.logOutButton.Name = "logOutButton";
             this.logOutButton.Size = new System.Drawing.Size(87, 23);
             this.logOutButton.TabIndex = 2;
@@ -69,7 +69,7 @@ namespace IRC_Client
             // 
             this.UserLabel.AutoSize = true;
             this.UserLabel.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.UserLabel.Location = new System.Drawing.Point(12, 9);
+            this.UserLabel.Location = new System.Drawing.Point(170, 9);
             this.UserLabel.Name = "UserLabel";
             this.UserLabel.Size = new System.Drawing.Size(37, 13);
             this.UserLabel.TabIndex = 3;
@@ -78,7 +78,7 @@ namespace IRC_Client
             // usernameLabel
             // 
             this.usernameLabel.AutoSize = true;
-            this.usernameLabel.Location = new System.Drawing.Point(56, 9);
+            this.usernameLabel.Location = new System.Drawing.Point(213, 9);
             this.usernameLabel.Name = "usernameLabel";
             this.usernameLabel.Size = new System.Drawing.Size(53, 13);
             this.usernameLabel.TabIndex = 4;
@@ -88,7 +88,7 @@ namespace IRC_Client
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(120, 261);
+            this.ClientSize = new System.Drawing.Size(278, 261);
             this.Controls.Add(this.usernameLabel);
             this.Controls.Add(this.UserLabel);
             this.Controls.Add(this.logOutButton);

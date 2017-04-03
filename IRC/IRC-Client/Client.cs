@@ -140,33 +140,28 @@ namespace IRC_Client
             usersList.Add(us);
         }
 
-        public bool queryForConnection(string peer)
+        public void queryForConnection(string peer)
         {
-            bool acceptedConnection;
+            
             string peerPort;
 
             peerPort = getUserPort(peer);
+            
 
             if (peerPort == null)
             {
                 Console.WriteLine("<Queryforconnection> ERROR! User not found in userslist");
-                return false;
+                return;
             }
 
             IClient cliProxy = (IClient)Activator.GetObject(typeof(IClient),
                     "tcp://localhost:" + peerPort + "/ClientRemote");
 
-            acceptedConnection = cliProxy.queryChat(myUser.nickname);
+           
 
-            if (acceptedConnection)
-            {
-                connectChat(peerPort);
-                return true;
-            }
-            else
-            {
-                return false;
-            }
+            
+            connectChat(peerPort, peer);
+            
             
         }
 
@@ -182,24 +177,35 @@ namespace IRC_Client
             return null;
         }
 
-        public void connectChat(string port)
+        public void connectChat(string port, string user)
         {
-            Console.WriteLine("CONECTING");
-
-            IClient cliProxy = (IClient)Activator.GetObject(typeof(IClient),
+            if (!connected.ContainsKey(port.ToString())) {
+                IClient cliProxy = (IClient)Activator.GetObject(typeof(IClient),
                     "tcp://localhost:" + port + "/ClientRemote");
-            connected.Add(port, cliProxy);
-
-            Console.WriteLine("CONECTED");
-            chat.AddTab(port.ToString());
+                connected.Add(port, cliProxy);
+                //MessageBox.Show(port);
+                chat.AddTab(port, user);
+            }  
         }
 
         public void connectChat(int port, Intermediate.Message msg)
         {
-            IClient cliProxy = (IClient)Activator.GetObject(typeof(IClient),
-                    "tcp://localhost:" + port + "/ClientRemote");
-            connected.Add(port.ToString(), cliProxy);
-            chat.AddTab(port.ToString(), msg);
+            if (!connected.ContainsKey(port.ToString())) {
+                IClient cliProxy = (IClient)Activator.GetObject(typeof(IClient),
+                   "tcp://localhost:" + port + "/ClientRemote");
+                connected.Add(port.ToString(), cliProxy);
+                chat.AddTab(port.ToString(), msg );
+            }
+           
+        }
+
+        public void disconnectChat(string port) {
+            if (connected.ContainsKey(port)) {
+                IClient cliProxy = connected[port];
+                connected.Remove(port);
+                
+                closeTab(port);
+            }
         }
 
         public void ReceiveMessage(Intermediate.Message msg)
@@ -223,16 +229,19 @@ namespace IRC_Client
             }
         }
 
-        public void sendMessage(string msg, string receiver)
+        public void sendMessage(string msg, string receiver, string user)
         {
-            Console.WriteLine("PASTEISSSSSSSSSS");
             IClient proxy = connected[receiver];
-            proxy.ReceiveMessage(myChatPort, msg, DateTime.Now);
+            proxy.ReceiveMessage(myChatPort, msg, DateTime.Now, user);
         }
 
         public void setForm(ChatInterface form)
         {
             chat = form;
+        }
+
+        public void closeTab(string peerName) {
+            chat.closeTab(peerName);
         }
 
 

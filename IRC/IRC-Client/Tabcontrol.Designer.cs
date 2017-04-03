@@ -36,7 +36,7 @@
             this.tabControl1.Location = new System.Drawing.Point(4, 0);
             this.tabControl1.Name = "tabControl1";
             this.tabControl1.SelectedIndex = 0;
-            this.tabControl1.Size = new System.Drawing.Size(443, 247);
+            this.tabControl1.Size = new System.Drawing.Size(485, 283);
             this.tabControl1.TabIndex = 0;
             // 
             // Tabcontrol
@@ -45,7 +45,7 @@
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.Controls.Add(this.tabControl1);
             this.Name = "Tabcontrol";
-            this.Size = new System.Drawing.Size(450, 250);
+            this.Size = new System.Drawing.Size(489, 283);
             this.ResumeLayout(false);
 
         }
@@ -53,5 +53,7 @@
         #endregion
 
         private System.Windows.Forms.TabControl tabControl1;
+
+        
     }
 }

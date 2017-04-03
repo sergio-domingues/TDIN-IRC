@@ -58,9 +58,10 @@ namespace IRC_Client
             return port;
         }
 
-        public override void ReceiveMessage(String user, String msg, DateTime time)
+        public override void ReceiveMessage(String user, String msg, DateTime time, string port1)
         {
-            Client.instance.ReceiveMessage(new Intermediate.Message { sender = user, message = msg, timestamp = time });
+            //MessageBox.Show(user + " " + port1);
+            Client.instance.ReceiveMessage(new Intermediate.Message { sender = user, message = msg, port= port1, timestamp = time });
         }
 
         public override bool queryChat(string peerName)
@@ -72,6 +73,11 @@ namespace IRC_Client
             dialogResult = MessageBox.Show(queryMsg, "Chat invitation", MessageBoxButtons.YesNo);
 
             return (dialogResult == DialogResult.Yes ? true : false);
+        }
+
+        public override string getUserName()
+        {
+            return Client.instance.myUser.nickname;
         }
     }
 }
